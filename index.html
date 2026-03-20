@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gentleman's Sport - Güncel Analizler</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ececec; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #1a237e; border-bottom: 2px solid #1a237e; padding-bottom: 10px; }
+        .news-item { padding: 15px; border-bottom: 1px solid #eee; }
+        .news-title { font-weight: bold; color: #333; font-size: 1.1em; }
+        .news-desc { color: #666; font-size: 0.9em; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gentleman's Sport | Spor Bülteni</h1>
+        <div id="news-feed">Haberler yükleniyor...</div>
+    </div>
+
+    <script>
+        // RSS haberlerini çekmek için ücretsiz bir servis kullanıyoruz (rss2json)
+        fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.trtspor.com.tr/manset-haberler.rss')
+        .then(res => res.json())
+        .then(data => {
+            let output = '';
+            data.items.slice(0, 5).forEach(item => {
+                output += `
+                    <div class="news-item">
+                        <div class="news-title">${item.title}</div>
+                        <div class="news-desc">${item.description.substring(0, 100)}...</div>
+                    </div>`;
+            });
+            document.getElementById('news-feed').innerHTML = output;
+        });
+    </script>
+</body>
+</html>
